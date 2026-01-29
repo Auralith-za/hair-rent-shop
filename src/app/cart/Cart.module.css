@@ -1,0 +1,164 @@
+.container {
+    max-width: var(--container-width);
+    margin: 40px auto;
+    padding: 0 1rem;
+}
+
+.title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-weight: 300;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+@media (min-width: 992px) {
+    .content {
+        flex-direction: row;
+    }
+}
+
+.items {
+    flex: 3;
+}
+
+.summary {
+    flex: 2;
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 8px;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.emptyCart {
+    text-align: center;
+    padding: 60px 0;
+    color: #888;
+}
+
+.item {
+    display: flex;
+    gap: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    align-items: flex-start;
+}
+
+.itemImageWrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.itemDetails {
+    flex: 1;
+}
+
+.itemTitle {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #111;
+}
+
+.itemDescription {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.itemPrice {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #8B4513;
+    margin: 0;
+}
+
+.removeBtn {
+    color: #d9534f;
+    background: none;
+    border: none;
+    font-size: 0.85rem;
+    text-decoration: underline;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.removeBtn:hover {
+    color: #c9302c;
+}
+
+.summaryTitle {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #333;
+}
+
+.summaryRow {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 0.95rem;
+}
+
+.summaryTotal {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+    margin-top: 10px;
+    border-top: 2px solid #333;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.checkoutBtn {
+    width: 100%;
+    padding: 16px;
+    background-color: #8B4513;
+    color: white;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.checkoutBtn:hover {
+    background-color: #6d3410;
+}
+
+.continueShoppingLink {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #8B4513;
+    text-decoration: underline;
+    font-size: 0.9rem;
+}
+
+.continueShoppingLink:hover {
+    color: #6d3410;
+}

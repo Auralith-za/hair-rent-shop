@@ -1,0 +1,204 @@
+.container {
+    max-width: var(--container-width);
+    margin: 40px auto;
+    padding: 0 1rem;
+}
+
+.title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-weight: 300;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 30px;
+}
+
+@media (min-width: 992px) {
+    .content {
+        flex-direction: row;
+        gap: 40px;
+    }
+}
+
+.orderSummary {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 8px;
+    height: fit-content;
+}
+
+@media (min-width: 992px) {
+    .orderSummary {
+        position: sticky;
+        top: 20px;
+    }
+}
+
+.checkoutForm {
+    flex: 1.5;
+}
+
+.sectionTitle {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #333;
+}
+
+.items {
+    margin-bottom: 20px;
+}
+
+.item {
+    display: flex;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.item:last-child {
+    border-bottom: none;
+}
+
+.itemImage {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.itemDetails {
+    flex: 1;
+}
+
+.itemName {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.itemPrice {
+    font-size: 0.9rem;
+    color: #8B4513;
+    font-weight: 600;
+    margin: 0;
+}
+
+.totalSection {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #333;
+}
+
+.totalRow {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 1rem;
+}
+
+.totalRow:last-child {
+    font-size: 1.2rem;
+    color: #8B4513;
+    margin-top: 10px;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.input,
+.textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+.input:focus,
+.textarea:focus {
+    outline: none;
+    border-color: #8B4513;
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.paymentOptions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.radioLabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.radioLabel:hover {
+    border-color: #8B4513;
+}
+
+.radioLabel input[type="radio"] {
+    cursor: pointer;
+}
+
+.radioLabel input[type="radio"]:checked+span {
+    font-weight: 600;
+    color: #8B4513;
+}
+
+.submitBtn {
+    width: 100%;
+    padding: 16px;
+    background-color: #8B4513;
+    color: white;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submitBtn:hover:not(:disabled) {
+    background-color: #6d3410;
+}
+
+.submitBtn:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}

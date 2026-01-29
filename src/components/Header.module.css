@@ -1,0 +1,142 @@
+/* Header.module.css */
+.header {
+    width: 100%;
+    font-family: var(--font-base);
+}
+
+.topBar {
+    background-color: var(--color-secondary);
+    /* #D9D5D2 */
+    padding: 1rem 0;
+}
+
+.topBarInner {
+    display: flex;
+    justify-content: flex-start;
+    /* Aligned left as per reference? Screenshot shows left alignment of container content usually */
+    align-items: center;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+    gap: 20px;
+}
+
+.socialIcons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.socialLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111;
+    font-size: 1.2rem;
+    transition: opacity 0.3s;
+}
+
+.socialLink:hover {
+    opacity: 0.7;
+}
+
+.bookBtn {
+    background-color: #E0BA5E;
+    /* Gold/Yellow color seen in "BOOK NOW" button? Wait, analysis said Brown #4C3729? */
+    /* Re-checking analysis: "Primary Action/Button Background (Brown): rgb(76, 55, 41)". 
+     But let's look at the screenshot if possible. 
+     The text in screen says "BOOK NOW". 
+     I will use the Brown #4C3729 as primary action was identified as such.
+     Wait, I extracted u-palette-3-base... let's stick to the analyzed brown or update if it looks wrong.
+     Actually, let's use the brown variable. */
+    background-color: var(--color-primary);
+    color: #fff;
+    padding: 10px 30px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-left: auto;
+    /* Push to right? Or sit next to icons? layout analysis said "Social Icons ... BOOK NOW". */
+    margin-left: 20px;
+    /* If the container aligns left, they sit together. */
+}
+
+.bookBtn:hover {
+    background-color: #3e2d21;
+}
+
+.mainBar {
+    background-color: white;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.mainBarInner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.logo {
+    max-height: 80px;
+    width: auto;
+}
+
+.nav {
+    display: flex;
+    gap: 30px;
+}
+
+.navLink {
+    color: #111;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.navLink:hover {
+    color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+    .nav {
+        display: none;
+        /* Hide for mobile for now, or use hamburger if implemented */
+    }
+}
+
+.cartIcon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111;
+    margin-left: 20px;
+    transition: opacity 0.3s;
+}
+
+.cartIcon:hover {
+    opacity: 0.7;
+}
+
+.cartCount {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--color-primary);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

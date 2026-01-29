@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Request {
+  id              Int       @id @default(autoincrement())
+  customerName    String
+  customerEmail   String
+  customerPhone   String?
+  message         String?   // Initial inquiry message
+  
+  // Product Snapshot
+  productId       Int
+  productName     String
+  productSlug     String
+  productImage    String?
+  
+  status          String    @default("PENDING") // PENDING, ACCEPTED, REJECTED, ARCHIVED
+  adminNotes      String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  messages        Message[]
+}
+
+
+
+model Order {
+  id              Int       @id @default(autoincrement())
+  orderNumber     String    @unique
+  
+  // Customer Information
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  customerAddress String
+  notes           String?
+  
+  // Order Details
+  items           String    // JSON string of order items
+  total           String
+  paymentMethod   String    @default("EFT")
+  
+  // Status
+  status          String    @default("PENDING") // PENDING, APPROVED, REJECTED, PAID, PROCESSING, SHIPPED, COMPLETED, CANCELLED
+  adminNotes      String?
+  
+  // Proof of Payment
+  proofOfPayment  String?   // Path to uploaded POP file
+  popUploadedAt   DateTime? // Timestamp of upload
+  
+  messages        Message[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String
+  sender    String   // "ADMIN", "CUSTOMER"
+  requestId Int?
+  request   Request? @relation(fields: [requestId], references: [id])
+  orderId   Int?
+  order     Order?   @relation(fields: [orderId], references: [id])
+  createdAt DateTime @default(now())
+}

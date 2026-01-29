@@ -1,33 +1,55 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* Brand Colors */
+  --color-primary: #4C3729;
+  /* Hair Rent Brown for key actions */
+  --color-secondary: #D9D5D2;
+  --color-footer-bg: #333333;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Frontrow Style Colors */
+  --color-text-main: #111111;
+  --color-text-light: #666666;
+  --color-background: #ffffff;
+  --color-accent: #bc6433;
+  /* For 'Add to Cart' button if we want to copy exactly, or keep hair rent brown? User said "look and feel like frontrow". Let's use accent for big buttons. */
+
+  /* Typography */
+  --font-base: var(--font-montserrat), sans-serif;
+  --font-heading: var(--font-cormorant), serif;
+
+  --container-width: 1400px;
+  /* Wider container for 4-col grid */
 }
 
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-text-main);
+  background: var(--color-background);
+  font-family: var(--font-base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  /* Thin elegance */
+  margin: 0;
+}
+
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
 a {
@@ -35,8 +57,14 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+button {
+  cursor: pointer;
+  font-family: var(--font-base);
+}
+
+/* Utilities */
+.container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 2rem;
 }
