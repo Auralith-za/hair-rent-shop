@@ -76,7 +76,10 @@ export default function CheckoutPage() {
                 body: JSON.stringify(orderData),
             });
 
-            if (!res.ok) throw new Error("Failed to create order");
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.details || errorData.error || "Failed to create order");
+            }
 
             const data = await res.json();
             setOrderNumber(data.orderNumber);
@@ -92,9 +95,9 @@ export default function CheckoutPage() {
                 router.push("/checkout/success");
             }, 3000);
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Order submission error:", error);
-            alert("Failed to submit order. Please try again.");
+            alert(`Failed to submit order: ${error.message}`);
         } finally {
             setIsSubmitting(false);
         }

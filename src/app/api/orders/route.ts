@@ -122,7 +122,10 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error("Failed to fetch orders:", error);
         return NextResponse.json(
-            { error: "Failed to fetch orders" },
+            {
+                error: "Failed to fetch orders",
+                details: error.message || "Unknown error"
+            },
             { status: 500 }
         );
     }

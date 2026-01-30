@@ -37,7 +37,10 @@ export default function OrdersPage() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || `Error ${response.status}: Failed to fetch orders`);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.details || errorData.error || `Error ${response.status}: Failed to fetch orders`);
+                }
             }
 
             const data = await response.json();

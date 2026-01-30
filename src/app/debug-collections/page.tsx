@@ -16,6 +16,8 @@ export default async function DebugPage() {
     let categoryData = null;
     let productsData = null;
     let error = null;
+    let dbStatus = null;
+    let dbError = null;
     let envCheck = {
         url: process.env.NEXT_PUBLIC_WORDPRESS_URL,
         hasKey: !!process.env.WC_CONSUMER_KEY,
@@ -32,6 +34,16 @@ export default async function DebugPage() {
             const catId = categoryData[0].id;
             const prodResponse = await api.get("products", { category: catId });
             productsData = prodResponse.data;
+        }
+
+        // 3. Test Database Connection
+        try {
+            const { prisma } = await import("@/lib/prisma");
+            // @ts-ignore
+            dbStatus = await prisma.order.count();
+            dbStatus = `Connected. Order count: ${dbStatus}`;
+        } catch (dbErr: any) {
+            dbError = dbErr.message;
         }
 
     } catch (e: any) {
@@ -67,6 +79,15 @@ export default async function DebugPage() {
                 </div>
             )}
 
+            <div style={{ marginBottom: 20 }}>
+                <h3>Database Connection</h3>
+                {dbError ? (
+                    <div style={{ color: 'red' }}>Error: {dbError}</div>
+                ) : (
+                    <div style={{ color: 'green' }}>{dbStatus}</div>
+                )}
+            </div>
+
             <div>
                 <h3>Existing Helper Function Test</h3>
                 <p>Calling <code>getProductsByCategory('in-stock')</code>...</p>
@@ -75,3 +96,4 @@ export default async function DebugPage() {
         </div>
     );
 }
+```
