@@ -119,7 +119,7 @@ export async function GET(request: NextRequest) {
         });
 
         return NextResponse.json({ orders });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Failed to fetch orders:", error);
         return NextResponse.json(
             {
