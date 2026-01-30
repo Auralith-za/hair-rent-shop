@@ -1,6 +1,6 @@
 # Netlify Configuration for Hair-Rent Shop
 [build]
-  command = "npm run build"
+  command = "npx prisma generate && npm run build"
   publish = ".next"
 
 [[plugins]]
