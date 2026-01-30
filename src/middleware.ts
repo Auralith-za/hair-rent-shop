@@ -4,6 +4,11 @@ import { getSession } from '@/lib/auth';
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
+    // Allow API routes to bypass authentication
+    if (pathname.startsWith('/api')) {
+        return NextResponse.next();
+    }
+
     // Allow access to login page
     if (pathname === '/admin/login') {
         return NextResponse.next();
@@ -24,5 +29,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: '/admin/:path*',
+    matcher: ['/admin/:path*', '/api/:path*'],
 };

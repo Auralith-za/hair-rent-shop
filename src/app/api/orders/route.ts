@@ -82,10 +82,18 @@ export async function POST(request: NextRequest) {
             orderId: order.id
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Order creation error:", error);
+        console.error("Error details:", {
+            message: error.message,
+            stack: error.stack,
+            name: error.name
+        });
         return NextResponse.json(
-            { error: "Failed to create order" },
+            {
+                error: "Failed to create order",
+                details: error.message || "Unknown error"
+            },
             { status: 500 }
         );
     }

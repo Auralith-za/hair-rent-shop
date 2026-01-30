@@ -83,10 +83,18 @@ export async function PATCH(
             order: updatedOrder
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Order update error:", error);
+        console.error("Error details:", {
+            message: error.message,
+            stack: error.stack,
+            name: error.name
+        });
         return NextResponse.json(
-            { error: "Failed to update order" },
+            {
+                error: "Failed to update order",
+                details: error.message || "Unknown error"
+            },
             { status: 500 }
         );
     }
