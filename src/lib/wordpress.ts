@@ -42,29 +42,28 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     }
 }
 
+// Known category IDs (hardcoded for performance)
+const CATEGORY_IDS: Record<string, number> = {
+    'in-stock': 49,
+    'pre-order': 50,
+};
+
 export async function getProductsByCategory(categorySlug: string): Promise<Product[]> {
     try {
-        // First we likely need to get the category ID from the slug if the API requires ID for filtering
-        // Or check if 'category' param accepts slug. 
-        // WC API v3 'products' endpoint has a 'category' param which takes ID.
-        // We might need to fetch category first.
+        const categoryId = CATEGORY_IDS[categorySlug];
 
-        // Let's try to get category by slug first
-        const categoryRes = await api.get("products/categories", {
-            slug: categorySlug
-        });
-
-        if (categoryRes.data && categoryRes.data.length > 0) {
-            const categoryId = categoryRes.data[0].id;
-            const response = await api.get("products", {
-                category: categoryId,
-                status: "publish",
-                per_page: 20
-            });
-            return response.data;
+        if (!categoryId) {
+            console.error(`Unknown category slug: ${categorySlug}`);
+            return [];
         }
 
-        return [];
+        const response = await api.get("products", {
+            category: categoryId,
+            status: "publish",
+            per_page: 20
+        });
+
+        return response.data;
     } catch (error) {
         console.error(`Error fetching products for category ${categorySlug}:`, error);
         return [];

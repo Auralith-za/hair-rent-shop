@@ -1,6 +1,9 @@
 import { getProductsByCategory, getProductsByIds } from "@/lib/wordpress";
 import ProductGrid from "@/components/ProductGrid";
 
+// Enable Next.js caching - revalidate every 5 minutes
+export const revalidate = 300;
+
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     let products = [];
