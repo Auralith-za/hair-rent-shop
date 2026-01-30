@@ -44,8 +44,8 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 
 // Category ID mapping to avoid extra API call
 const CATEGORY_IDS: Record<string, number> = {
-    'in-stock': 15,  // Update this with actual category ID if different
-    'pre-order': 16, // Update this with actual category ID if different
+    // 'in-stock': 15,  // Disabled to force slug lookup on production
+    // 'pre-order': 16, // Disabled to force slug lookup on production
 };
 
 export async function getProductsByCategory(slug: string): Promise<Product[]> {
