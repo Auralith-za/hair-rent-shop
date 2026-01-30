@@ -1,3 +1,5 @@
+"use client";
+
 export default function Loading() {
     return (
         <main style={{ padding: "40px 0", minHeight: "80vh" }}>
