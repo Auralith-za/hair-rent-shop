@@ -52,7 +52,12 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
 
     const fetchOrder = async () => {
         try {
-            const response = await fetch(`/api/orders/${id}`);
+            const response = await fetch(`/api/orders/${id}`, {
+                cache: 'no-store', // Prevent caching
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate'
+                }
+            });
             const data = await response.json();
             setOrder(data.order);
             setAdminNotes(data.order.adminNotes || "");

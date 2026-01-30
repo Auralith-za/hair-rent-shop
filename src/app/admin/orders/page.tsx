@@ -25,7 +25,12 @@ export default function OrdersPage() {
 
     const fetchOrders = async () => {
         try {
-            const response = await fetch("/api/orders");
+            const response = await fetch("/api/orders", {
+                cache: 'no-store', // Prevent caching
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate'
+                }
+            });
             const data = await response.json();
             setOrders(data.orders || []);
         } catch (error) {

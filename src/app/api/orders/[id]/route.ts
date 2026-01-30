@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { sendOrderApprovedEmail, sendPaymentConfirmedEmail } from "@/lib/email-templates";
 import { prisma } from "@/lib/prisma";
 
+// Disable caching for this route to always fetch fresh data
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function PATCH(
     request: NextRequest,
     props: { params: Promise<{ id: string }> }
@@ -105,11 +109,8 @@ export async function GET(
     const params = await props.params;
     try {
         const { id } = params;
-        console.log("API: Fetching order with ID:", id); // DEBUG
 
         const parsedId = parseInt(id);
-        console.log("API: Parsed ID:", parsedId); // DEBUG
-
         let order = null;
 
         if (!isNaN(parsedId)) {
@@ -122,33 +123,11 @@ export async function GET(
 
         // If not found by ID, try fetching by orderNumber
         if (!order) {
-            console.log("API: Not found by ID, trying orderNumber:", id);
             order = await prisma.order.findUnique({
                 where: { orderNumber: id },
                 include: { messages: true }
             });
         }
-
-        console.log("API: Order found:", order ? "Yes" : "No"); // DEBUG
-
-        /*
-        // Previously strict integer check
-        if (isNaN(parsedId)) {
-            console.error("API: Invalid ID format");
-            return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
-        }
-        */
-
-        if (!order) {
-            return NextResponse.json(
-                { error: "Order not found" },
-                { status: 404 }
-            );
-        }
-
-        return NextResponse.json({ order });
-
-        console.log("API: Order found:", order ? "Yes" : "No"); // DEBUG
 
         if (!order) {
             return NextResponse.json(
