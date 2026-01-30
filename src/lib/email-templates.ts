@@ -201,7 +201,7 @@ export async function sendOrderApprovedEmail(data: {
             <p>We will process your order once payment is confirmed. This usually takes 1-2 business days.</p>
             
             <div style="text-align: center; margin: 20px 0;">
-                <a href="https://hair-rent.co.za/orders/${orderNumber}" style="display: inline-block; padding: 12px 24px; background: #8B4513; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                <a href="https://hair-rent-shop.netlify.app/orders/${orderNumber}" style="display: inline-block; padding: 12px 24px; background: #8B4513; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
                     Upload Proof of Payment
                 </a>
             </div>
@@ -368,7 +368,7 @@ export async function sendPOPUploadedNotification(data: {
             </div>
 
             <div style="text-align: center; margin: 20px 0;">
-                <a href="https://hair-rent.co.za/admin/orders" style="display: inline-block; padding: 12px 24px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                <a href="https://hair-rent-shop.netlify.app/admin/orders" style="display: inline-block; padding: 12px 24px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
                     View Order in Admin Panel
                 </a>
             </div>
@@ -413,7 +413,7 @@ export async function sendOrderReplyEmail(data: {
             </div>
 
             <div style="text-align: center; margin: 20px 0;">
-                <a href="https://hair-rent.co.za/orders/${orderNumber}" style="display: inline-block; padding: 12px 24px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                <a href="https://hair-rent-shop.netlify.app/orders/${orderNumber}" style="display: inline-block; padding: 12px 24px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
                     View Order & Reply
                 </a>
             </div>
@@ -464,7 +464,7 @@ export async function sendOrderWaitlistedEmail(data: {
             </div>
 
             <div style="text-align: center; margin: 20px 0;">
-                <a href="https://hair-rent.co.za/orders/${orderNumber}" style="display: inline-block; padding: 12px 24px; background: #ffc107; color: black; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                <a href="https://hair-rent-shop.netlify.app/orders/${orderNumber}" style="display: inline-block; padding: 12px 24px; background: #ffc107; color: black; text-decoration: none; border-radius: 4px; font-weight: bold;">
                     View Order Status
                 </a>
             </div>
@@ -516,7 +516,7 @@ export async function sendOrderRejectedEmail(data: {
             <p>Please feel free to browse our shop for other available items.</p>
 
             <div style="text-align: center; margin: 20px 0;">
-                <a href="https://hair-rent.co.za/" style="display: inline-block; padding: 12px 24px; background: #333; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                <a href="https://hair-rent-shop.netlify.app/" style="display: inline-block; padding: 12px 24px; background: #333; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
                     Browse Shop
                 </a>
             </div>
