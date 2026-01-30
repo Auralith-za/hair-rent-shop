@@ -89,16 +89,22 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
 
             if (response.ok) {
                 const data = await response.json();
+
+                let message = `Order updated to ${newStatus}`;
+
                 if (data.emailSent) {
-                    alert(`Order ${newStatus.toLowerCase()} successfully! Email sent to customer.`);
+                    message += " and email sent successfully to customer.";
                 } else if (data.emailError) {
-                    alert(`Order updated, BUT email failed to send: ${data.emailError}`);
+                    message += ` but email failed to send: ${data.emailError}`;
                 } else {
-                    alert(`Order ${newStatus.toLowerCase()} successfully!`);
+                    message += ".";
                 }
+
+                alert(message);
                 fetchOrder();
             } else {
-                alert("Failed to update order");
+                const errorData = await response.json();
+                alert(`Failed to update order: ${errorData.error || "Unknown error"}`);
             }
         } catch (error) {
             console.error("Failed to update order:", error);

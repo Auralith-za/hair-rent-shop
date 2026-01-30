@@ -431,3 +431,105 @@ export async function sendOrderReplyEmail(data: {
         html
     });
 }
+
+// Waitlisted notification email
+export async function sendOrderWaitlistedEmail(data: {
+    customerEmail: string;
+    customerName: string;
+    orderNumber: string;
+    items: any[];
+}) {
+    const { sendEmail } = await import("@/lib/email");
+    const { customerEmail, customerName, orderNumber, items } = data;
+
+    const itemsList = items.map(item => `
+        <li>${item.productName}</li>
+    `).join('');
+
+    const html = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="color: #333;">Hair Rent Shop</h2>
+                <h3 style="color: #ffc107;">Added to Waitlist</h3>
+            </div>
+
+            <p>Hi ${customerName},</p>
+            <p>Thank you for your interest! Your request for order <strong>#${orderNumber}</strong> has been added to our <strong>WAITLIST</strong>.</p>
+            
+            <p>The following items are currently unavailable, but we've saved your request:</p>
+            <ul>${itemsList}</ul>
+
+            <div style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 20px 0;">
+                <p style="margin: 0; color: #856404;"><strong>What happens next?</strong> We will contact you immediately via email if these items become available.</p>
+            </div>
+
+            <div style="text-align: center; margin: 20px 0;">
+                <a href="http://localhost:3000/orders/${orderNumber}" style="display: inline-block; padding: 12px 24px; background: #ffc107; color: black; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                    View Order Status
+                </a>
+            </div>
+
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; font-size: 12px; color: #888; text-align: center;">
+                <p>&copy; ${new Date().getFullYear()} Hair Rent Shop. All rights reserved.</p>
+            </div>
+        </div>
+    `;
+
+    return sendEmail({
+        to: customerEmail,
+        subject: `Added to Waitlist - Order #${orderNumber}`,
+        html
+    });
+}
+
+// Rejected/Sold notification email
+export async function sendOrderRejectedEmail(data: {
+    customerEmail: string;
+    customerName: string;
+    orderNumber: string;
+    items: any[];
+}) {
+    const { sendEmail } = await import("@/lib/email");
+    const { customerEmail, customerName, orderNumber, items } = data;
+
+    const itemsList = items.map(item => `
+        <li>${item.productName}</li>
+    `).join('');
+
+    const html = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="color: #333;">Hair Rent Shop</h2>
+                <h3 style="color: #dc3545;">Order Update</h3>
+            </div>
+
+            <p>Hi ${customerName},</p>
+            <p>Thank you for your interest in our products.</p>
+            
+            <div style="background-color: #f8d7da; padding: 15px; border-left: 4px solid #dc3545; margin: 20px 0;">
+                <p style="margin: 0; color: #721c24;">Unfortunately, we are unable to fulfill your request for order <strong>#${orderNumber}</strong> at this time.</p>
+            </div>
+
+            <p>The following items are no longer available (likely sold out):</p>
+            <ul>${itemsList}</ul>
+
+            <p>Please feel free to browse our shop for other available items.</p>
+
+            <div style="text-align: center; margin: 20px 0;">
+                <a href="http://localhost:3000/" style="display: inline-block; padding: 12px 24px; background: #333; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                    Browse Shop
+                </a>
+            </div>
+
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; font-size: 12px; color: #888; text-align: center;">
+                <p>&copy; ${new Date().getFullYear()} Hair Rent Shop. All rights reserved.</p>
+            </div>
+        </div>
+    `;
+
+    return sendEmail({
+        to: customerEmail,
+        subject: `Order Update - #${orderNumber}`,
+        html
+    });
+}

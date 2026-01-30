@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendOrderApprovedEmail, sendPaymentConfirmedEmail } from "@/lib/email-templates";
+import {
+    sendOrderApprovedEmail,
+    sendPaymentConfirmedEmail,
+    sendOrderWaitlistedEmail,
+    sendOrderRejectedEmail
+} from "@/lib/email-templates";
 import { prisma } from "@/lib/prisma";
 
 // Disable caching for this route to always fetch fresh data
@@ -37,10 +42,14 @@ export async function PATCH(
             }
         });
 
-        // If order is approved, send email with EFT details
-        if (status === "APPROVED") {
-            try {
-                const items = JSON.parse(order.items);
+        let emailSent = false;
+        let emailError = null;
+
+        try {
+            const items = JSON.parse(order.items);
+
+            // Handle email sending based on status
+            if (status === "APPROVED") {
                 await sendOrderApprovedEmail({
                     customerEmail: order.customerEmail,
                     customerName: order.customerName,
@@ -48,26 +57,8 @@ export async function PATCH(
                     items,
                     total: order.total
                 });
-                return NextResponse.json({
-                    success: true,
-                    order: updatedOrder,
-                    emailSent: true
-                });
-            } catch (emailError: any) {
-                console.error("Failed to send approval email:", emailError);
-                return NextResponse.json({
-                    success: true,
-                    order: updatedOrder,
-                    emailSent: false,
-                    emailError: emailError.message || "Unknown email error"
-                });
-            }
-        }
-
-        // If order is marked as PAID, send payment confirmation email
-        if (status === "PAID") {
-            try {
-                const items = JSON.parse(order.items);
+                emailSent = true;
+            } else if (status === "PAID") {
                 await sendPaymentConfirmedEmail({
                     customerEmail: order.customerEmail,
                     customerName: order.customerName,
@@ -75,14 +66,34 @@ export async function PATCH(
                     items,
                     total: order.total
                 });
-            } catch (emailError) {
-                console.error("Failed to send payment confirmation email:", emailError);
+                emailSent = true;
+            } else if (status === "WAITLISTED") {
+                await sendOrderWaitlistedEmail({
+                    customerEmail: order.customerEmail,
+                    customerName: order.customerName,
+                    orderNumber: order.orderNumber,
+                    items
+                });
+                emailSent = true;
+            } else if (status === "REJECTED") {
+                await sendOrderRejectedEmail({
+                    customerEmail: order.customerEmail,
+                    customerName: order.customerName,
+                    orderNumber: order.orderNumber,
+                    items
+                });
+                emailSent = true;
             }
+        } catch (error: any) {
+            console.error(`Failed to send email for status ${status}:`, error);
+            emailError = error.message || "Unknown email error";
         }
 
         return NextResponse.json({
             success: true,
-            order: updatedOrder
+            order: updatedOrder,
+            emailSent,
+            emailError
         });
 
     } catch (error: any) {

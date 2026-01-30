@@ -74,9 +74,18 @@ export default function OrdersPage() {
         <div className={styles.container}>
             <div className={styles.header}>
                 <h1>Orders</h1>
-                <Link href="/admin" className={styles.backLink}>
-                    ← Back to Dashboard
-                </Link>
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <button
+                        onClick={fetchOrders}
+                        className={styles.viewButton}
+                        disabled={loading}
+                    >
+                        {loading ? "Refreshing..." : "🔄 Refresh"}
+                    </button>
+                    <Link href="/admin" className={styles.backLink}>
+                        ← Back to Dashboard
+                    </Link>
+                </div>
             </div>
 
             <div className={styles.filters}>
