@@ -104,7 +104,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                 fetchOrder();
             } else {
                 const errorData = await response.json();
-                alert(`Failed to update order: ${errorData.error || "Unknown error"}`);
+                alert(`Failed to update order: ${errorData.error || "Unknown error"}\nDetails: ${errorData.details || "No details provided"}`);
             }
         } catch (error) {
             console.error("Failed to update order:", error);
