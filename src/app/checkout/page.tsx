@@ -46,6 +46,11 @@ export default function CheckoutPage() {
 
         try {
             // Create order
+            // Detect if cart contains pre-order items
+            const hasPreOrderItems = items.some(item =>
+                item.categories?.some((cat: any) => cat.slug === 'pre-order')
+            );
+
             const orderData = {
                 customerName: formData.name,
                 customerEmail: formData.email,
@@ -53,6 +58,7 @@ export default function CheckoutPage() {
                 customerAddress: formData.address,
                 notes: formData.notes,
                 paymentMethod,
+                orderType: hasPreOrderItems ? 'PRE-ORDER' : 'REGULAR',
                 items: items.map(item => ({
                     productId: item.id,
                     productName: item.name,

@@ -46,6 +46,7 @@ model Order {
   items           String    // JSON string of order items
   total           String
   paymentMethod   String    @default("EFT")
+  orderType       String    @default("REGULAR") // REGULAR or PRE-ORDER
   
   // Status
   status          String    @default("PENDING") // PENDING, APPROVED, REJECTED, PAID, PROCESSING, SHIPPED, COMPLETED, CANCELLED

@@ -37,10 +37,12 @@ export default function OrdersPage() {
 
     const filteredOrders = filter === "all"
         ? orders
-        : orders.filter(order => {
-            if (filter === "ACCEPTED") return order.status === "APPROVED" || order.status === "ACCEPTED";
-            return order.status === filter;
-        });
+        : filter === "PRE-ORDER"
+            ? orders.filter((order: any) => order.orderType === "PRE-ORDER")
+            : orders.filter(order => {
+                if (filter === "ACCEPTED") return order.status === "APPROVED" || order.status === "ACCEPTED";
+                return order.status === filter;
+            });
 
     const getStatusBadgeClass = (status: string) => {
         switch (status) {
@@ -102,6 +104,12 @@ export default function OrdersPage() {
                     className={filter === "WAITLISTED" ? styles.activeFilter : ""}
                 >
                     Waitlisted ({orders.filter(o => o.status === "WAITLISTED").length})
+                </button>
+                <button
+                    onClick={() => setFilter("PRE-ORDER")}
+                    className={filter === "PRE-ORDER" ? styles.activeFilter : ""}
+                >
+                    Pre-Orders ({orders.filter((o: any) => o.orderType === "PRE-ORDER").length})
                 </button>
                 <button
                     onClick={() => setFilter("PAID")}

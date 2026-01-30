@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import { writeFile } from "fs/promises";
-import { join } from "path";
-
-const prisma = new PrismaClient();
+import path from "path";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(
     request: NextRequest,
@@ -68,7 +66,7 @@ export async function POST(
         // Save file
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
-        const filepath = join(process.cwd(), "public", "uploads", "pop", filename);
+        const filepath = path.join(process.cwd(), "public", "uploads", "pop", filename);
         await writeFile(filepath, buffer);
 
         // Update order

@@ -1,6 +1,9 @@
 import Link from "next/link";
 import styles from "./home.module.css";
 
+// Cache homepage for 10 minutes
+export const revalidate = 600;
+
 export default function Home() {
   return (
     <main>

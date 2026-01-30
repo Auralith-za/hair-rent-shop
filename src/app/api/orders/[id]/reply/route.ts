@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { sendEmail } from "@/lib/email";
+import { prisma } from "@/lib/prisma";
 import { sendOrderReplyEmail } from "@/lib/email-templates";
-
-const prisma = new PrismaClient();
 
 export async function POST(
     request: NextRequest,

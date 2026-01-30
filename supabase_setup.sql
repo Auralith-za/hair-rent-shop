@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS "Order" (
     "items" TEXT NOT NULL,
     "total" TEXT NOT NULL,
     "paymentMethod" TEXT NOT NULL DEFAULT 'EFT',
+    "orderType" TEXT DEFAULT 'REGULAR',
     "status" TEXT NOT NULL DEFAULT 'PENDING',
     "adminNotes" TEXT,
     "proofOfPayment" TEXT,

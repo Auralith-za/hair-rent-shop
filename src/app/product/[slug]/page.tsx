@@ -5,6 +5,9 @@ import styles from "@/components/ProductDetail.module.css";
 import ProductActions from "@/components/ProductActions";
 import ProductImageGallery from "@/components/ProductImageGallery";
 
+// Cache product pages for 10 minutes
+export const revalidate = 600;
+
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const product = await getProductBySlug(slug);
