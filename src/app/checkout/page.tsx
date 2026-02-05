@@ -18,12 +18,15 @@ export default function CheckoutPage() {
         notes: ""
     });
     const [paymentMethod, setPaymentMethod] = useState("EFT");
+    const [deliveryMethod, setDeliveryMethod] = useState("PICKUP"); // PICKUP or NATIONWIDE
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [showEFTModal, setShowEFTModal] = useState(false);
     const [orderNumber, setOrderNumber] = useState("");
 
-    const total = getCartTotal();
+    const cartTotal = getCartTotal();
+    const deliveryCost = deliveryMethod === "NATIONWIDE" ? 150 : 0;
+    const finalTotal = cartTotal + deliveryCost;
 
     // Redirect if cart is empty
     if (items.length === 0) {
@@ -58,6 +61,8 @@ export default function CheckoutPage() {
                 customerAddress: formData.address,
                 notes: formData.notes,
                 paymentMethod,
+                deliveryMethod,
+                deliveryCost: deliveryCost.toString(),
                 orderType: hasPreOrderItems ? 'PRE-ORDER' : 'REGULAR',
                 items: items.map(item => ({
                     productId: item.id,
@@ -67,7 +72,7 @@ export default function CheckoutPage() {
                     price: item.regular_price || item.price || "0",
                     quantity: item.quantity
                 })),
-                total: total.toString()
+                total: finalTotal.toString()
             };
 
             const res = await fetch("/api/orders", {
@@ -131,15 +136,50 @@ export default function CheckoutPage() {
                             </div>
                         ))}
                     </div>
-                    {total > 0 && (
+                    {cartTotal > 0 && (
                         <div className={styles.totalSection}>
                             <div className={styles.totalRow}>
                                 <span>Subtotal:</span>
-                                <span>R {total.toFixed(2)}</span>
+                                <span>R {cartTotal.toFixed(2)}</span>
                             </div>
+
+                            {/* Delivery Section */}
+                            <div className={styles.deliverySection} style={{ margin: "15px 0", padding: "15px 0", borderTop: "1px solid #eee", borderBottom: "1px solid #eee" }}>
+                                <p style={{ marginBottom: "10px", fontWeight: "bold" }}>Delivery Method:</p>
+
+                                <label className={styles.radioLabel} style={{ display: "flex", alignItems: "center", marginBottom: "8px", cursor: "pointer" }}>
+                                    <input
+                                        type="radio"
+                                        name="delivery"
+                                        value="PICKUP"
+                                        checked={deliveryMethod === "PICKUP"}
+                                        onChange={(e) => setDeliveryMethod(e.target.value)}
+                                        style={{ marginRight: "10px" }}
+                                    />
+                                    <span>Pick-up in Fourways (Free)</span>
+                                </label>
+
+                                <label className={styles.radioLabel} style={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
+                                    <input
+                                        type="radio"
+                                        name="delivery"
+                                        value="NATIONWIDE"
+                                        checked={deliveryMethod === "NATIONWIDE"}
+                                        onChange={(e) => setDeliveryMethod(e.target.value)}
+                                        style={{ marginRight: "10px" }}
+                                    />
+                                    <span>Nationwide Delivery (R 150.00)</span>
+                                </label>
+                            </div>
+
                             <div className={styles.totalRow}>
+                                <span>Delivery Cost:</span>
+                                <span>R {deliveryCost.toFixed(2)}</span>
+                            </div>
+
+                            <div className={styles.totalRow} style={{ marginTop: "15px", fontSize: "1.2rem" }}>
                                 <strong>Total:</strong>
-                                <strong>R {total.toFixed(2)}</strong>
+                                <strong>R {finalTotal.toFixed(2)}</strong>
                             </div>
                         </div>
                     )}

@@ -230,9 +230,11 @@ export async function sendAdminOrderNotification(data: {
     customerPhone: string;
     items: any[];
     total: string;
+    deliveryMethod?: string;
+    deliveryCost?: string;
 }) {
     const { sendEmail } = await import("@/lib/email");
-    const { orderNumber, customerName, customerEmail, customerPhone, items, total } = data;
+    const { orderNumber, customerName, customerEmail, customerPhone, items, total, deliveryMethod, deliveryCost } = data;
 
     const itemsList = items.map(item => `
         <li>${item.productName} - R ${parseFloat(item.price).toFixed(2)}</li>
@@ -252,6 +254,11 @@ export async function sendAdminOrderNotification(data: {
             <h3>Order Items:</h3>
             <ul>${itemsList}</ul>
 
+            <div style="margin: 20px 0; padding: 10px; background-color: #f0f0f0; border-radius: 5px;">
+                <p style="margin: 5px 0;"><strong>Delivery Method:</strong> ${deliveryMethod === 'NATIONWIDE' ? 'Nationwide Delivery' : 'Pick-up in Fourways'}</p>
+                ${deliveryCost && parseFloat(deliveryCost) > 0 ? `<p style="margin: 5px 0;"><strong>Delivery Cost:</strong> R ${parseFloat(deliveryCost).toFixed(2)}</p>` : ''}
+            </div>
+
             <p style="font-size: 1.2em;"><strong>Total:</strong> R ${parseFloat(total).toFixed(2)}</p>
             <p><strong>Payment Method:</strong> EFT</p>
             <p><strong>Status:</strong> Awaiting Payment</p>
@@ -264,7 +271,7 @@ export async function sendAdminOrderNotification(data: {
 
     return sendEmail({
         to: adminEmail,
-        subject: `New Order Received - #${orderNumber}`,
+        subject: `New Order Received - #${orderNumber} (${deliveryMethod === 'NATIONWIDE' ? 'Delivery' : 'Pickup'})`,
         html
     });
 }

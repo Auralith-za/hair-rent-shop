@@ -12,6 +12,8 @@ export async function POST(request: NextRequest) {
             customerAddress,
             notes,
             paymentMethod,
+            deliveryMethod,
+            deliveryCost,
             items,
             total
         } = body;
@@ -37,6 +39,8 @@ export async function POST(request: NextRequest) {
                 customerAddress,
                 notes: notes || "",
                 paymentMethod: paymentMethod || "EFT",
+                deliveryMethod: deliveryMethod || "PICKUP",
+                deliveryCost: deliveryCost || "0",
                 items: JSON.stringify(items),
                 total: total || "0",
                 status: "PENDING"
@@ -59,7 +63,6 @@ export async function POST(request: NextRequest) {
         */
 
         // Send notification to admin
-        /*
         try {
             await sendAdminOrderNotification({
                 orderNumber,
@@ -67,12 +70,13 @@ export async function POST(request: NextRequest) {
                 customerEmail,
                 customerPhone,
                 items,
-                total
+                total,
+                deliveryMethod,
+                deliveryCost
             });
         } catch (emailError) {
             console.error("Failed to send admin email:", emailError);
         }
-        */
 
         return NextResponse.json({
             success: true,
