@@ -10,6 +10,15 @@ export async function POST(
     const params = await props.params;
     try {
         const { id } = params;
+        const orderId = parseInt(id);
+
+        if (isNaN(orderId)) {
+            return NextResponse.json(
+                { error: "Invalid order ID" },
+                { status: 400 }
+            );
+        }
+
         const formData = await request.formData();
         const file = formData.get("file") as File;
 
@@ -40,7 +49,7 @@ export async function POST(
 
         // Get order
         const order = await prisma.order.findUnique({
-            where: { id: parseInt(id) }
+            where: { id: orderId }
         });
 
         if (!order) {
@@ -66,12 +75,21 @@ export async function POST(
         // Save file
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
-        const filepath = path.join(process.cwd(), "public", "uploads", "pop", filename);
+
+        // Ensure directory exists
+        const uploadDir = path.join(process.cwd(), "public", "uploads", "pop");
+        try {
+            await import("fs/promises").then(fs => fs.mkdir(uploadDir, { recursive: true }));
+        } catch (err) {
+            console.error("Failed to create directory:", err);
+        }
+
+        const filepath = path.join(uploadDir, filename);
         await writeFile(filepath, buffer);
 
         // Update order
         const updatedOrder = await prisma.order.update({
-            where: { id: parseInt(id) },
+            where: { id: orderId },
             data: {
                 proofOfPayment: `/uploads/pop/${filename}`,
                 popUploadedAt: new Date()
@@ -97,10 +115,10 @@ export async function POST(
             order: updatedOrder
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Upload error:", error);
         return NextResponse.json(
-            { error: "Failed to upload proof of payment" },
+            { error: error?.message || "Failed to upload proof of payment" },
             { status: 500 }
         );
     }
