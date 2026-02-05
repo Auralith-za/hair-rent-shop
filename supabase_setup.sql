@@ -87,3 +87,7 @@ CREATE TRIGGER order_updated_at_trigger
     BEFORE UPDATE ON "Order"
     FOR EACH ROW
     EXECUTE FUNCTION update_order_updated_at();
+
+-- Migration: Add orderType to existing orders (if needed)
+-- ALTER TABLE "Order" ADD COLUMN IF NOT EXISTS "orderType" TEXT DEFAULT 'REGULAR';
+-- UPDATE "Order" SET "orderType" = 'REGULAR' WHERE "orderType" IS NULL;

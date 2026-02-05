@@ -15,7 +15,8 @@ export async function POST(request: NextRequest) {
             deliveryMethod,
             deliveryCost,
             items,
-            total
+            total,
+            orderType
         } = body;
 
         // Validate required fields
@@ -43,6 +44,7 @@ export async function POST(request: NextRequest) {
                 deliveryCost: deliveryCost || "0",
                 items: JSON.stringify(items),
                 total: total || "0",
+                orderType: orderType || "REGULAR",
                 status: "PENDING"
             }
         });
