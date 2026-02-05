@@ -91,3 +91,7 @@ CREATE TRIGGER order_updated_at_trigger
 -- Migration: Add orderType to existing orders (if needed)
 -- ALTER TABLE "Order" ADD COLUMN IF NOT EXISTS "orderType" TEXT DEFAULT 'REGULAR';
 -- UPDATE "Order" SET "orderType" = 'REGULAR' WHERE "orderType" IS NULL;
+
+-- Migration: Add delivery details (if needed)
+-- ALTER TABLE "Order" ADD COLUMN IF NOT EXISTS "deliveryMethod" TEXT DEFAULT 'PICKUP';
+-- ALTER TABLE "Order" ADD COLUMN IF NOT EXISTS "deliveryCost" TEXT DEFAULT '0';

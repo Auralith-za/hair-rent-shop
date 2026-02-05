@@ -27,6 +27,8 @@ interface Order {
     adminNotes: string;
     proofOfPayment: string | null;
     popUploadedAt: string | null;
+    deliveryMethod: string;
+    deliveryCost: string;
     createdAt: string;
     messages?: Message[];
 }
@@ -204,6 +206,13 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                                 <tr>
                                     <td><strong>Address:</strong></td>
                                     <td>{order.customerAddress}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Delivery:</strong></td>
+                                    <td>
+                                        {order.deliveryMethod}
+                                        {Number(order.deliveryCost) > 0 && ` (+ R${order.deliveryCost})`}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

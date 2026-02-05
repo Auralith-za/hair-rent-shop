@@ -1,13 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
-import path from "path";
 import { prisma } from "@/lib/prisma";
+import { supabase } from "@/lib/supabase";
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 export async function POST(
     request: NextRequest,
     props: { params: Promise<{ id: string }> }
 ) {
+    // Await params first to satisfy Next.js 15
     const params = await props.params;
+
     try {
         const { id } = params;
         const orderId = parseInt(id);
@@ -72,38 +79,45 @@ export async function POST(
         const extension = file.name.split('.').pop();
         const filename = `pop_${order.orderNumber}_${timestamp}.${extension}`;
 
-        // Save file
+        // Upload to Supabase Storage
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        // Ensure directory exists
-        const uploadDir = path.join(process.cwd(), "public", "uploads", "pop");
-        try {
-            await import("fs/promises").then(fs => fs.mkdir(uploadDir, { recursive: true }));
-        } catch (err) {
-            console.error("Failed to create directory:", err);
+        const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('uploads')
+            .upload(`pop/${filename}`, buffer, {
+                contentType: file.type,
+                upsert: true
+            });
+
+        if (uploadError) {
+            console.error("Supabase storage upload error:", uploadError);
+            throw new Error(`Storage upload failed: ${uploadError.message}`);
         }
 
-        const filepath = path.join(uploadDir, filename);
-        await writeFile(filepath, buffer);
+        // Get public URL
+        const { data: { publicUrl } } = supabase.storage
+            .from('uploads')
+            .getPublicUrl(`pop/${filename}`);
 
-        // Update order
+        // Update order with public URL
         const updatedOrder = await prisma.order.update({
             where: { id: orderId },
             data: {
-                proofOfPayment: `/uploads/pop/${filename}`,
+                proofOfPayment: publicUrl,
                 popUploadedAt: new Date()
             }
         });
 
         // Send notification to admin
+        // Note: Dynamic import to avoid circular dependencies if any
         try {
             const { sendPOPUploadedNotification } = await import("@/lib/email-templates");
             await sendPOPUploadedNotification({
                 orderNumber: order.orderNumber,
                 customerName: order.customerName,
                 customerEmail: order.customerEmail,
-                popUrl: `/uploads/pop/${filename}`
+                popUrl: publicUrl
             });
         } catch (emailError) {
             console.error("Failed to send POP notification email:", emailError);
