@@ -82,13 +82,15 @@
     /* Space for scrollbar if needed */
     scrollbar-width: thin;
     max-width: 650px;
+    width: 100%;
     /* Match main image width */
     margin: 0 auto;
     /* Center it */
 }
 
 .thumbnailBtn {
-    flex: 0 0 auto;
+    flex: 0 0 calc(25% - 7.5px);
+    max-width: 90px;
     border: 2px solid transparent;
     background: none;
     padding: 0;
@@ -104,8 +106,9 @@
 
 .thumbnailImg {
     display: block;
-    width: 90px;
-    height: 110px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 90 / 110;
     object-fit: cover;
 }
 
@@ -127,13 +130,20 @@
 .title {
     font-family: var(--font-base);
     /* Modern Sans */
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    line-height: 1.1;
+    line-height: 1.2;
     margin-bottom: 10px;
     color: var(--color-text-main);
     text-transform: uppercase;
 }
+
+@media (min-width: 768px) {
+    .title {
+        font-size: 2rem;
+    }
+}
+
 
 .price {
     font-family: var(--font-base);
